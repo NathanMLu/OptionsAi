@@ -12,11 +12,11 @@ app = Flask(__name__)
 f = open("token", "w")
 embed = {"access_token": os.environ["ACCESS_TOKEN"],
          "scope": os.environ["SCOPE"],
-         "expires_in": os.environ["EXPIRES_IN"],
+         "expires_in": int(os.environ["EXPIRES_IN"]),
          "token_type": os.environ["TOKEN_TYPE"],
-         "expires_at": os.environ["EXPIRES_AT"],
+         "expires_at": int(os.environ["EXPIRES_AT"]),
          "refresh_token": os.environ["REFRESH_TOKEN"]}
-token = {"creation_timestamp": os.environ["CREATION_TIMESTAMP"],
+token = {"creation_timestamp": int(os.environ["CREATION_TIMESTAMP"]),
          "token": embed}
 print(token)
 f.write(json.dumps(token))
