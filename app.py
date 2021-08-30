@@ -8,6 +8,7 @@ import datetime
 app = Flask(__name__)
 
 # Creates the token file 
+
 f = open("token", "w")
 embed = {"access_token": os.environ["ACCESS_TOKEN"],
          "scope": os.environ["SCOPE"],
@@ -17,11 +18,15 @@ embed = {"access_token": os.environ["ACCESS_TOKEN"],
          "refresh_token": os.environ["REFRESH_TOKEN"]}
 token = {"creation_timestamp": os.environ["CREATION_TIMESTAMP"],
          "token": embed}
+print(token)
 f.write(json.dumps(token))
 
-# Creating client
-#c = auth.client_from_token_file('token', os.environ["API_KEY"])
 
+# Creating client
+c = auth.client_from_token_file('token', os.environ["API_KEY"])
+
+
+#c = auth.client_from_token_file('token', 'ONKF79JEA6QLTYCCHBA8MHYB649PXAPU@AMER.OAUTHAP')
 @app.route('/')
 def index():
     return 'Welcome to the OptionsAI!'
