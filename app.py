@@ -48,7 +48,6 @@ def post_something():
 @app.route('/')
 def index():
     f = open("token", "w")
-    print(os.environ('ACCOUNT_ID'))
     
     embed = {"access_token": os.environ["ACCESS_TOKEN"],
          "scope": os.environ["SCOPE"],
