@@ -46,9 +46,9 @@ def post_something():
 # A welcome message to test our server
 @app.route('/')
 def index():
-    f = open("test.txt", "w")
+    f = open("token", "w")
     f.write(os.environ['ACCOUNT_ID'])
-    f = open("test.txt", "r")
+    f = open("token", "r")
     ret = f.read()
     """
     f = open("token", "w")
@@ -63,7 +63,7 @@ def index():
     token = {"creation_timestamp": os.environ.CREATION_TIMESTAMP,
          "token": embed}
 
-    f.write(token)
+    f.write(json.dumps(token))
     f = open("token", "r")
     ret = f.read()
     """
