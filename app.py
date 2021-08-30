@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from tda import auth, client
 
 import os
@@ -23,45 +23,25 @@ f.write(json.dumps(token))
 
 # Creating client
 f = open("token", "r")
-print(f.read())
 c = auth.client_from_token_file('token', os.environ["API_KEY"])
 
-
-#c = auth.client_from_token_file('token', 'ONKF79JEA6QLTYCCHBA8MHYB649PXAPU@AMER.OAUTHAP')
 @app.route('/')
 def index():
-    return 'Welcome to the OptionsAI!'
+    return render_template('auth.html')
 
 @app.route('/quote/<string:symbol>')
 def quote(symbol):
     response = c.get_quote(symbol)
     return response.json()
 
-"""
-from flask import Flask
-
-
-application = Flask(__name__)
-
-c = auth.client_from_token_file(config.token_path, config.api_key)
-
-@application.route('/')
-def index():
-    return "Hello World"
-
-@application.route('/quote/<string:symbol>')
-def quote(symbol):
-    response = c.get_quote(symbol)
-    return response.json()
-
-@application.route('/option/chain/<string:symbol>')
+@app.route('/option/chain/<string:symbol>')
 def option_chain(symbol):
     response = c.get_option_chain(symbol)
     return response.json()
 
-@application.route('/option/order', methods=['POST'])
+@app.route('/option/order', methods=['POST'])
 def option_order():
-    webhook_message = application.current_request.json_body
+    webhook_message = app.current_request.json_body
 
     print(webhook_message)
 
@@ -104,7 +84,7 @@ def option_order():
         
 
 
-
+"""
 
         @app.route('/getmsg/', methods=['GET'])
 def respond():
