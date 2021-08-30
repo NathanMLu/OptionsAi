@@ -47,7 +47,7 @@ def post_something():
 @app.route('/')
 def index():
     f = open("token", "w")
-    f.write(os.environ['ACCOUNT_ID'])
+    f.write(os.environ['ACCESS_TOKEN'])
     f = open("token", "r")
     ret = f.read()
     """
