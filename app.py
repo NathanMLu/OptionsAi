@@ -20,7 +20,7 @@ token = {"creation_timestamp": os.environ["CREATION_TIMESTAMP"],
 f.write(json.dumps(token))
 
 # Creating client
-c = auth.client_from_token_file('token', os.environ["API_KEY"])
+#c = auth.client_from_token_file('token', os.environ["API_KEY"])
 
 @app.route('/')
 def index():
