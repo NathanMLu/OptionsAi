@@ -1,5 +1,9 @@
 from flask import Flask, request, jsonify
+from tda import auth, client
+import config
+
 app = Flask(__name__)
+c = auth.client_from_token_file(config.token_path, config.api_key)
 
 @app.route('/getmsg/', methods=['GET'])
 def respond():
@@ -48,7 +52,7 @@ def index():
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support
     app.run(threaded=True, port=5000)
-    
+
 """
 from flask import Flask
 from tda import auth, client
