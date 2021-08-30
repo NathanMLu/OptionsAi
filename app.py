@@ -51,7 +51,7 @@ def option_order():
             "message": "no passphrase, c'mon at least try something..."
             
         }
-    if webhook_message['passphrase'] != config.secretcode:
+    if webhook_message['passphrase'] != os.environ["SECRET_CODE"]:
         return {
             "code": "error",
             "message": "wrong passphrase buddy. good try but not good enough :)"
@@ -76,7 +76,7 @@ def option_order():
             ]
         }
 
-        response = c.place_order(config.account_id, order_spec)
+        response = c.place_order(os.environ["ACCOUNT_ID"], order_spec)
 
         return{
             "code": "order placed!"
