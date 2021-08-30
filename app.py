@@ -18,11 +18,12 @@ embed = {"access_token": os.environ["ACCESS_TOKEN"],
          "refresh_token": os.environ["REFRESH_TOKEN"]}
 token = {"creation_timestamp": int(os.environ["CREATION_TIMESTAMP"]),
          "token": embed}
-print(token)
 f.write(json.dumps(token))
 
 
 # Creating client
+f = open("token", "r")
+print(f.read())
 c = auth.client_from_token_file('token', os.environ["API_KEY"])
 
 
