@@ -34,7 +34,7 @@ def post_something():
     # You can add the test cases you made in the previous function, but in our case here you are just testing the POST functionality
     if param:
         return jsonify({
-            "Message": f"Welcome {name} to our awesome platform!!",
+            "Message": f"Welcome {param} to our awesome platform!!",
             # Add this option to distinct the POST request
             "METHOD" : "POST"
         })
@@ -46,9 +46,19 @@ def post_something():
 # A welcome message to test our server
 @app.route('/')
 def index():
-    f = open("test.txt", "w")
-    f.write(os.environ['ACCOUNT_ID'])
-    f = open("test.txt", "r")
+    f = open("token", "w")
+
+    embed = {"access_token": os.environ.ACCESS_TOKEN,
+         "scope": os.environ.SCOPE,
+         "expires_in": os.environ.EXPIRES_IN,
+         "token_type": os.environ.TOKEN_TYPE,
+         "expires_at": os.environ.EXPIRES_AT,
+         "refresh_token": os.environ.REFRESH_TOKEN}
+    token = {"creation_timestamp": os.environ.CREATION_TIMESTAMP,
+         "token": embed}
+
+    f.write(token)
+    f = open("token", "r")
     ret = f.read()
 
     return ret
