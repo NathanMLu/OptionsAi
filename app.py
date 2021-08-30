@@ -1,78 +1,40 @@
 from flask import Flask, request, jsonify
 from tda import auth, client
-import os
-import json
-
-app = Flask(__name__)
-
-@app.route('/getmsg/', methods=['GET'])
-def respond():
-    # Retrieve the name from url parameter
-    name = request.args.get("name", None)
-
-    # For debugging
-    print(f"got name {name}")
-
-    response = {}
-
-    # Check if user sent a name at all
-    if not name:
-        response["ERROR"] = "no name found, please send a name."
-    # Check if the user entered a number not a name
-    elif str(name).isdigit():
-        response["ERROR"] = "name can't be numeric."
-    # Now the user entered a valid name
-    else:
-        response["MESSAGE"] = f"Welcome {name} to our awesome platform!!"
-
-    # Return the response in json format
-    return jsonify(response)
-
-@app.route('/post/', methods=['POST'])
-def post_something():
-    param = request.form.get('name')
-    print(param)
-    # You can add the test cases you made in the previous function, but in our case here you are just testing the POST functionality
-    if param:
-        return jsonify({
-            "Message": f"Welcome {param} to our awesome platform!!",
-            # Add this option to distinct the POST request
-            "METHOD" : "POST"
-        })
-    else:
-        return jsonify({
-            "ERROR": "no name found, please send a name."
-        })
-
-# A welcome message to test our server
-@app.route('/')
-def index():
-    f = open("token", "w")
-    
-    embed = {"access_token": os.environ["ACCESS_TOKEN"],
-         "scope": os.environ["SCOPE"],
-         "expires_in": os.environ["EXPIRES_IN"],
-         "token_type": os.environ["TOKEN_TYPE"],
-         "expires_at": os.environ["EXPIRES_AT"],
-         "refresh_token": os.environ["REFRESH_TOKEN"]}
-    token = {"creation_timestamp": os.environ["CREATION_TIMESTAMP"],
-         "token": embed}
-
-    f.write(json.dumps(token))
-    f = open("token", "r")
-    ret = f.read()
-
-    return ret
-
-
-"""
-from flask import Flask
-from tda import auth, client
 
 import os
 import json
 import datetime
 import config
+
+app = Flask(__name__)
+
+# Creates the token file 
+f = open("token", "w")
+embed = {"access_token": os.environ["ACCESS_TOKEN"],
+         "scope": os.environ["SCOPE"],
+         "expires_in": os.environ["EXPIRES_IN"],
+         "token_type": os.environ["TOKEN_TYPE"],
+         "expires_at": os.environ["EXPIRES_AT"],
+         "refresh_token": os.environ["REFRESH_TOKEN"]}
+token = {"creation_timestamp": os.environ["CREATION_TIMESTAMP"],
+         "token": embed}
+f.write(json.dumps(token))
+
+# Creating client
+c = auth.client_from_token_file('token', os.environ["API_KEY"])
+
+@app.route('/')
+def index():
+    return 'Welcome to the OptionsAI!'
+
+@app.route('/quote/<string:symbol>')
+def quote(symbol):
+    response = c.get_quote(symbol)
+    return response.json()
+
+"""
+from flask import Flask
+
 
 application = Flask(__name__)
 
@@ -134,4 +96,47 @@ def option_order():
         return{
             "code": "order placed!"
         }
+        
+
+
+
+
+        @app.route('/getmsg/', methods=['GET'])
+def respond():
+    # Retrieve the name from url parameter
+    name = request.args.get("name", None)
+
+    # For debugging
+    print(f"got name {name}")
+
+    response = {}
+
+    # Check if user sent a name at all
+    if not name:
+        response["ERROR"] = "no name found, please send a name."
+    # Check if the user entered a number not a name
+    elif str(name).isdigit():
+        response["ERROR"] = "name can't be numeric."
+    # Now the user entered a valid name
+    else:
+        response["MESSAGE"] = f"Welcome {name} to our awesome platform!!"
+
+    # Return the response in json format
+    return jsonify(response)
+
+@app.route('/post/', methods=['POST'])
+def post_something():
+    param = request.form.get('name')
+    print(param)
+    # You can add the test cases you made in the previous function, but in our case here you are just testing the POST functionality
+    if param:
+        return jsonify({
+            "Message": f"Welcome {param} to our awesome platform!!",
+            # Add this option to distinct the POST request
+            "METHOD" : "POST"
+        })
+    else:
+        return jsonify({
+            "ERROR": "no name found, please send a name."
+        })
 """
