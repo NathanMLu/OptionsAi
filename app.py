@@ -4,7 +4,6 @@ from tda import auth, client
 import os
 import json
 import datetime
-import config
 
 app = Flask(__name__)
 
