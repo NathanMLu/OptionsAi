@@ -50,7 +50,7 @@ def index():
     f.write("hello hello testt")
     f = open("test.txt", "r")
     ret = f.read()
-    return f"<h1>Welcome to our server !!{ret}</h1>"
+    return ret
 
 
 if __name__ == '__main__':
