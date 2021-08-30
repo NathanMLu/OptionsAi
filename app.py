@@ -5,10 +5,10 @@ import os
 import json
 import datetime
 
+# Generates new Flask app
 app = Flask(__name__)
 
 # Creates the token file 
-
 f = open("token", "w")
 embed = {"access_token": os.environ["ACCESS_TOKEN"],
          "scope": os.environ["SCOPE"],
@@ -20,14 +20,19 @@ token = {"creation_timestamp": int(os.environ["CREATION_TIMESTAMP"]),
          "token": embed}
 f.write(json.dumps(token))
 
-
 # Creating client
 f = open("token", "r")
 c = auth.client_from_token_file('token', os.environ["API_KEY"])
 
+# Default route leads to authentication
 @app.route('/')
-def index():
+def auth():
     return render_template('auth.html')
+
+@app.route('/form/', methods = ['POST'])
+def form():
+    form_data = request.form
+    return 'success!'
 
 @app.route('/quote/<string:symbol>')
 def quote(symbol):
