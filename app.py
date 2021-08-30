@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from tda import auth, client
 import os
+import json
 
 app = Flask(__name__)
 
@@ -47,26 +48,20 @@ def post_something():
 @app.route('/')
 def index():
     f = open("token", "w")
-    f.write(os.environ['ACCESS_TOKEN'])
-    f = open("token", "r")
-    ret = f.read()
-    """
-    f = open("token", "w")
     print(os.environ('ACCOUNT_ID'))
     
-    embed = {"access_token": os.environ.ACCESS_TOKEN,
-         "scope": os.environ.SCOPE,
-         "expires_in": os.environ.EXPIRES_IN,
-         "token_type": os.environ.TOKEN_TYPE,
-         "expires_at": os.environ.EXPIRES_AT,
-         "refresh_token": os.environ.REFRESH_TOKEN}
-    token = {"creation_timestamp": os.environ.CREATION_TIMESTAMP,
+    embed = {"access_token": os.environ["ACCESS_TOKEN"],
+         "scope": os.environ["SCOPE"],
+         "expires_in": os.environ["EXPIRES_IN"],
+         "token_type": os.environ["TOKEN_TYPE"],
+         "expires_at": os.environ["EXPIRES_AT"],
+         "refresh_token": os.environ["REFRESH_TOKEN"]}
+    token = {"creation_timestamp": os.environ["CREATION_TIMESTAMP"],
          "token": embed}
 
     f.write(json.dumps(token))
     f = open("token", "r")
     ret = f.read()
-    """
 
     return ret
 
