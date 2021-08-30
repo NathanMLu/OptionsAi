@@ -46,8 +46,14 @@ def post_something():
 # A welcome message to test our server
 @app.route('/')
 def index():
+    f = open("test.txt", "w")
+    f.write(os.environ['ACCOUNT_ID'])
+    f = open("test.txt", "r")
+    ret = f.read()
+    """
     f = open("token", "w")
     print(os.environ('ACCOUNT_ID'))
+    
     embed = {"access_token": os.environ.ACCESS_TOKEN,
          "scope": os.environ.SCOPE,
          "expires_in": os.environ.EXPIRES_IN,
@@ -60,6 +66,7 @@ def index():
     f.write(token)
     f = open("token", "r")
     ret = f.read()
+    """
 
     return ret
 
