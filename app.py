@@ -3,7 +3,6 @@ from tda import auth, client
 import os
 
 app = Flask(__name__)
-c = auth.client_from_token_file('token', os.environ.get('API_KEY'))
 
 @app.route('/getmsg/', methods=['GET'])
 def respond():
