@@ -46,10 +46,11 @@ def post_something():
 # A welcome message to test our server
 @app.route('/')
 def index():
-    f = open("test.txt", "x")
-    f.write("hello hello testt")
+    f = open("test.txt", "w")
+    f.write(os.environ['ACCOUNT_ID'])
     f = open("test.txt", "r")
     ret = f.read()
+
     return ret
 
 
