@@ -3,4 +3,4 @@
 !requirements.txt
 !Procfile
 !.gitignore
-!auth.html
+!templates/*.html
