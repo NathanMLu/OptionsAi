@@ -1,6 +1,4 @@
-*
-!app.py
-!requirements.txt
-!Procfile
-!.gitignore
-!templates/*.html
+config.py
+.venv
+__pycache__
+token
