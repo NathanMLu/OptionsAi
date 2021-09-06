@@ -13,7 +13,7 @@ if os.path.exists('config.py'):
 app = Flask(__name__)
 
 # Creates token file if it has not been created
-if os.path.exists('token'):
+if os.path.exists('lllllllaaammaaaaaseaaalll'):
     print('IT EXISTSTSTSTSTST')
     c = auth.client_from_token_file('token', config.apikey)
 else:
