@@ -5,24 +5,35 @@ import os
 import json
 import datetime
 
+# Loading in config file if it exists (depends on server or localhost)
+if os.path.exists('config.py'):
+    import config
+
 # Generates new Flask app
 app = Flask(__name__)
 
-# Creates the token file 
-f = open("token", "w")
-embed = {"access_token": os.environ["ACCESS_TOKEN"],
-         "scope": os.environ["SCOPE"],
-         "expires_in": int(os.environ["EXPIRES_IN"]),
-         "token_type": os.environ["TOKEN_TYPE"],
-         "expires_at": int(os.environ["EXPIRES_AT"]),
-         "refresh_token": os.environ["REFRESH_TOKEN"]}
-token = {"creation_timestamp": int(os.environ["CREATION_TIMESTAMP"]),
-         "token": embed}
-f.write(json.dumps(token))
+# Creates token file if it has not been created
+if os.path.exists('token'):
+    c = auth.client_from_token_file('token', config.apikey)
+else:
+    # Creates the token file 
+    f = open("token", "w")
+    embed = {"access_token": os.environ["ACCESS_TOKEN"],
+            "scope": os.environ["SCOPE"],
+            "expires_in": int(os.environ["EXPIRES_IN"]),
+            "token_type": os.environ["TOKEN_TYPE"],
+            "expires_at": int(os.environ["EXPIRES_AT"]),
+            "refresh_token": os.environ["REFRESH_TOKEN"]}
+    token = {"creation_timestamp": int(os.environ["CREATION_TIMESTAMP"]),
+            "token": embed}
+    f.write(json.dumps(token))
 
-# Creating client
-f = open("token", "r")
-c = auth.client_from_token_file('token', os.environ["API_KEY"])
+    # Creating client
+    f = open("token", "r")
+    c = auth.client_from_token_file('token', os.environ["API_KEY"])
+
+# This decides if the user is authenticated, which is the only way they can do things
+verified = False
 
 # Default route leads to authentication
 @app.route('/')
