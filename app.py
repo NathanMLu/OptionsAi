@@ -1,19 +1,27 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect
 from tda import auth, client
 
 import os
 import json
 import datetime
 
+# If it is running locally or on heroku servers
+local = False
+# If  user is verified or not
+verified = False
+
+if os.path.exists('local.txt'):
+    local = True
+
 # Loading in config file if it exists (depends on server or localhost)
-if os.path.exists('config.py'):
+if local == True:
     import config
 
 # Generates new Flask app
 app = Flask(__name__)
 
 # Creates token file if it has not been created
-if os.path.exists('local.txt'):
+if local == True:
     c = auth.client_from_token_file('token', config.apikey)
 else:
     # Creates the token file 
@@ -32,18 +40,36 @@ else:
     f = open("token", "r")
     c = auth.client_from_token_file('token', os.environ["API_KEY"])
 
-# This decides if the user is authenticated, which is the only way they can do things
-verified = False
+
 
 # Default route leads to authentication
 @app.route('/')
 def auth():
     return render_template('auth.html')
 
-@app.route('/form/', methods = ['POST'])
+@app.route('/form', methods = ['POST'])
 def form():
+    global local, verified
+    error = None
+
     form_data = request.form
-    return 'success!'
+    if local == True:
+        if form_data['username'] != config.optionsai_username or form_data['password'] != config.optionsai_password:
+            error = 'Error! Access Denied! 🔫'
+    else:
+        if form_data['username'] != os.environ['OPTIONSAI_USERNAME'] or form_data['password'] != os.environ['OPTIONSAI_PASSWORD']:
+            error = 'Error! Access Denied! 🔫'
+    
+    if error != None:
+        return render_template('auth.html', error = error)
+    else:
+        return redirect('/controlpanel')
+
+
+@app.route('/controlpanel')
+def controlpanel():
+    return render_template('controlpanel.html')
+
 
 @app.route('/quote/<string:symbol>')
 def quote(symbol):
