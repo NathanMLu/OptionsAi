@@ -7,11 +7,11 @@ import datetime
 
 # If it is running locally or on heroku servers
 local = False
-# If  user is verified or not
-verified = False
-
 if os.path.exists('local.txt'):
     local = True
+
+# If  user is verified or not
+verified = False
 
 # Loading in config file if it exists (depends on server or localhost)
 if local == True:
@@ -40,31 +40,31 @@ else:
     f = open("token", "r")
     c = auth.client_from_token_file('token', os.environ["API_KEY"])
 
-
-
 # Default route leads to authentication
 @app.route('/')
 def auth():
-    return render_template('auth.html')
+    return render_template('homepage.html')
 
-@app.route('/form', methods = ['POST'])
+@app.route('/form', methods = ['GET', 'POST'])
 def form():
     global local, verified
     error = None
-
-    form_data = request.form
-    if local == True:
-        if form_data['username'] != config.optionsai_username or form_data['password'] != config.optionsai_password:
-            error = 'Error! Access Denied! 🔫'
+    if request.method == 'POST':
+        form_data = request.form
+        if local == True:
+            if form_data['username'] != config.optionsai_username or form_data['password'] != config.optionsai_password:
+                error = 'Error! Access Denied! 🔫'
+        else:
+            if form_data['username'] != os.environ['OPTIONSAI_USERNAME'] or form_data['password'] != os.environ['OPTIONSAI_PASSWORD']:
+                error = 'Error! Access Denied! 🔫'
+        
+        if error != None:
+            return render_template('auth.html', error = error)
+        else:
+            verified = True
+            return redirect('/controlpanel')
     else:
-        if form_data['username'] != os.environ['OPTIONSAI_USERNAME'] or form_data['password'] != os.environ['OPTIONSAI_PASSWORD']:
-            error = 'Error! Access Denied! 🔫'
-    
-    if error != None:
-        return render_template('auth.html', error = error)
-    else:
-        return redirect('/controlpanel')
-
+        return render_template('auth.html')
 
 @app.route('/controlpanel')
 def controlpanel():
@@ -124,46 +124,3 @@ def option_order():
             "code": "order placed!"
         }
         
-
-
-"""
-
-        @app.route('/getmsg/', methods=['GET'])
-def respond():
-    # Retrieve the name from url parameter
-    name = request.args.get("name", None)
-
-    # For debugging
-    print(f"got name {name}")
-
-    response = {}
-
-    # Check if user sent a name at all
-    if not name:
-        response["ERROR"] = "no name found, please send a name."
-    # Check if the user entered a number not a name
-    elif str(name).isdigit():
-        response["ERROR"] = "name can't be numeric."
-    # Now the user entered a valid name
-    else:
-        response["MESSAGE"] = f"Welcome {name} to our awesome platform!!"
-
-    # Return the response in json format
-    return jsonify(response)
-
-@app.route('/post/', methods=['POST'])
-def post_something():
-    param = request.form.get('name')
-    print(param)
-    # You can add the test cases you made in the previous function, but in our case here you are just testing the POST functionality
-    if param:
-        return jsonify({
-            "Message": f"Welcome {param} to our awesome platform!!",
-            # Add this option to distinct the POST request
-            "METHOD" : "POST"
-        })
-    else:
-        return jsonify({
-            "ERROR": "no name found, please send a name."
-        })
-"""

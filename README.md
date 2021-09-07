@@ -1,0 +1,1 @@
+This is an Options Trading Bot that will utilize TradingView webhooks to trigger pre-set indicators. 

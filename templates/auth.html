@@ -9,15 +9,15 @@
 </head>
 <body>
     <div class = "login">
-        <h2>OptionsAi Login</h2><br>
-        <form id = "login" action="form" method = "POST">
+        <h2>OptionsAi Login</h2>
+        <form id = "box" action="form" method = "POST">
             <p>Username <input type = "text" name = "username" id = "Uname" /></p>
             <p>Password <input type = "password" name = "password" id = "Pass"/></p>
             <p><input type = "submit" value = "submit" id="submit"/></p>
         </form>
 
         {% if error %}
-            <p class = "error">{{error}}</p>
+            <p class = "error"><i>{{error}}</i></p>
         {% endif %}
     </div>
 </body>
