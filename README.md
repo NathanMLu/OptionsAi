@@ -1,1 +1,1 @@
-This is an Options Trading Bot that will utilize TradingView webhooks to trigger pre-set indicators. 
+This project has been closed sourced, and is development in collaboration with C3 Investments LLC.
